@@ -1,0 +1,26 @@
+#instalamos librerías
+#install.packages("gtrendsR")
+#install.packages("googlesheets4")
+#install.packages("googleAuthR")
+#install.packages("taskscheduleR")
+
+
+#cargamos librerías
+library(gtrendsR)
+library(dplyr)
+library(googlesheets4)
+library(googleAuthR)
+library(taskscheduleR)
+
+
+#hacemos la consulta a Google Trends
+camiseta <- gtrends(c("camiseta"), time = "now 7-d", geo = c("ES"))
+
+#estructuramos los datos en una tabla
+camisetaRelated <- camiseta$related_queries
+
+#nos autentificamos pasándole en token
+gs4_auth("token.json")
+
+#guardamos el dataset en google sheets
+dt = write_sheet(camisetaRelated, ss="<url_de_la_hoja>", sheet = "camiseta")
